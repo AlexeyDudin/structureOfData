@@ -1,7 +1,7 @@
 #include "Queue.h"
 #include <iostream>
 
-void PrintQueue(Queue* startQueuePtr)
+void PrintQueue(PQueue startQueuePtr)
 {
 	Queue* currQueueElem = startQueuePtr;
 	while (currQueueElem != NULL)
@@ -13,35 +13,41 @@ void PrintQueue(Queue* startQueuePtr)
 	}
 }
 
-Queue* AddQueue()
+PStack AddQueue()
 {
 	system("cls");
 	string elemName;
-	Queue* startQueuePtr = NULL;
-	Queue* currQueuePtr = NULL;
+	PStack stackElem = new Stack;
+	stackElem->startElement = NULL;
+	stackElem->endElement = NULL;
+	stackElem->next = NULL;
+	PQueue currQueuePtr = NULL;
 	cout << "Введите элементы в очередь (Поочередно, разделяя Enter). Для завершения ввода введите символ '~'" << endl;
 	do
 	{
 		cin >> elemName;
 		if (elemName == "~")
 			break;
-		if (startQueuePtr == NULL)
+		if (stackElem->startElement == NULL)
 		{
-			currQueuePtr = new Queue;// = malloc(sizeof Queue);
-			startQueuePtr = currQueuePtr;
+			currQueuePtr = new Queue;
+			stackElem->startElement = currQueuePtr;
+			stackElem->endElement = currQueuePtr;
 		}
 		else
 		{
-			currQueuePtr->nextElement = new Queue;
-			currQueuePtr = currQueuePtr->nextElement;
+			stackElem->endElement->nextElement = new Queue;
+			currQueuePtr = stackElem->endElement->nextElement;
+			stackElem->endElement = currQueuePtr;
 		}
 		currQueuePtr->name = elemName;
 		currQueuePtr->nextElement = NULL;
+
 	} while (elemName != "~");
-	return startQueuePtr;
+	return stackElem;
 }
 
-void AddElementToQueue(Queue* startPtr)
+void AddElementToQueue(PStack startPtr)
 {
 	if (startPtr == NULL)
 	{
@@ -50,31 +56,33 @@ void AddElementToQueue(Queue* startPtr)
 	}
 	string elem;
 	cin >> elem;
-	Queue* currElemPtr = startPtr;
+	startPtr->endElement->nextElement = new Queue;
+	startPtr->endElement = startPtr->endElement->nextElement;
 
-	//Переходим в последний элемент очереди
-	while (currElemPtr->nextElement != NULL)
-	{
-		currElemPtr = currElemPtr->nextElement;
-	}
-	
-	//Создаем новый элемент очереди
-	currElemPtr->nextElement = new Queue;
-	currElemPtr = currElemPtr->nextElement;
-	
-	currElemPtr->nextElement = NULL;
-	currElemPtr->name = elem;
-
+	startPtr->endElement->name = elem;
+	startPtr->endElement->nextElement = NULL;
 	cout << "Элемент " << elem << " добавлен в очередь" << endl;
 }
 
-Queue* RemoveElementFromQueue(Queue* startPtr)
+PStack RemoveElementFromQueue(PStack startPtr)
 {
 	if (startPtr == NULL)
 		return NULL;
-	Queue* result = startPtr->nextElement;
-	cout << "Элемент " << startPtr->name << " удален из очереди" << endl;
-	free(startPtr);
-
-	return result;
+	PQueue result = startPtr->startElement;
+	
+	if (startPtr->startElement == NULL)
+		return startPtr;
+	
+	cout << "Элемент " << result->name << " удален из очереди" << endl;
+	if (startPtr->startElement == startPtr->endElement)
+	{
+		delete(startPtr->startElement);
+		startPtr->endElement = NULL;
+		startPtr->startElement = NULL;
+		return startPtr;
+	}
+	else
+		startPtr->startElement = startPtr->startElement->nextElement;
+	delete(result);
+	return startPtr;
 }

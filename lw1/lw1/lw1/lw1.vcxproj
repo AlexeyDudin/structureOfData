@@ -132,14 +132,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="QueueType.h" />
     <ClInclude Include="Stack.h" />
-    <ClInclude Include="Tests.h" />
+    <ClInclude Include="StackType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Stack.cpp" />
-    <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

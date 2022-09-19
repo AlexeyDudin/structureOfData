@@ -1,16 +1,23 @@
 #include "Stack.h"
+#include "StackType.h"
 #include <iostream>
 
 using namespace std;
 
-Stack* stackStartPtr = NULL;
+PStack stackStartPtr = NULL;
 
 void PrintAllStack()
 {
-	Stack* currStackElement = stackStartPtr;
+	if (stackStartPtr == NULL)
+	{
+		cout << "Стек пустой" << endl;
+		return;
+	}
+
+	PStack currStackElement = stackStartPtr;
 	while (currStackElement != NULL)
 	{
-		PrintQueue(currStackElement->element);
+		PrintQueue(currStackElement->startElement);
 		cout << endl;
 		if (currStackElement->next != NULL)
 			cout << "|" << endl;
@@ -21,14 +28,11 @@ void PrintAllStack()
 
 void AddQueueToStack()
 {
-	Queue* result = AddQueue();
-	if (result != NULL)
+	PStack stackPtr = AddQueue();
+	if (stackPtr->startElement != NULL)
 	{
-		Stack* currStackPtr = new Stack;
-		currStackPtr->next = stackStartPtr;
-		stackStartPtr = currStackPtr;
-		
-		stackStartPtr->element = result;
+		stackPtr->next = stackStartPtr;
+		stackStartPtr = stackPtr;
 		cout << "Очередь добавлена в стек" << endl;
 	}
 	else
@@ -40,9 +44,9 @@ void AddQueueToStack()
 void AddElementToQueue()
 {
 	if (stackStartPtr == NULL)
-		cout << "Невозможно добавить элемент, когда в стеке нет ни одного элемента";
+		cout << "Невозможно добавить элемент, когда в стеке нет ни одного элемента" << endl;
 	else
-		AddElementToQueue(stackStartPtr->element);
+		AddElementToQueue(stackStartPtr);
 }
 
 void RemoveFromStack()
@@ -52,20 +56,25 @@ void RemoveFromStack()
 		cout << "Невозможно удалить элемент из стека. Стек пуст" << endl;
 		return;
 	}
-	Stack* currStackPtr = stackStartPtr->next;
+	PStack currStackPtr = stackStartPtr->next;
 	//Очищаем элементы очереди
-	while ((stackStartPtr->element = RemoveElementFromQueue(stackStartPtr->element)) != NULL)
+	while ((stackStartPtr = RemoveElementFromQueue(stackStartPtr))->startElement != NULL)
 	{
 	}
 	cout << "Последний элемент стека очищен" << endl;
-	free(stackStartPtr);
+	delete(stackStartPtr);
 	stackStartPtr = currStackPtr;
 }
 
 void RemoveFromQueue()
 {
-	stackStartPtr->element = RemoveElementFromQueue(stackStartPtr->element);
-	if (stackStartPtr->element == NULL)
+	if (stackStartPtr == NULL)
+	{
+		cout << "Невозможно удалить элемент из очереди. Стек пуст" << endl;
+		return;
+	}
+	stackStartPtr = RemoveElementFromQueue(stackStartPtr);
+	if (stackStartPtr->startElement == NULL)
 	{
 		cout << "Не осталось ни одного элемента в очереди. Удаляем элемент из стека" << endl;
 		RemoveFromStack();

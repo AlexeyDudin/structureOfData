@@ -1,17 +1,11 @@
 #pragma once
-#include <string>
+#include "QueueType.h"
+#include "StackType.h"
 
-using namespace std;
+void PrintQueue(PQueue startPtr);
 
-typedef struct _queueStruct {
-	string name;
-	_queueStruct *nextElement;
-} Queue, *PQueue;
+PStack AddQueue();
 
-void PrintQueue(Queue* startPtr);
+void AddElementToQueue(PStack startPtr);
 
-Queue* AddQueue();
-
-void AddElementToQueue(Queue* startPtr);
-
-Queue* RemoveElementFromQueue(Queue* startPtr);
+PStack RemoveElementFromQueue(PStack startPtr);
