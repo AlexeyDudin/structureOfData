@@ -1,0 +1,16 @@
+Gusov 1
+Petrov 2
+Harlamov 3
+Dudin 4
+Luza 5
+Andor 6
+Hrack 7
+Pesa 8
+Gusov1 9
+Petrov1 11
+Harlamov1 10
+Dudin1 12
+Luza1 13
+Andor1 14
+Hrack1 15
+Pesa1 16
