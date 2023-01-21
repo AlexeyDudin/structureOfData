@@ -25,3 +25,5 @@
 *.idb
 *.filters
 *.exe
+/Lab4_1/.vs/Lab4_1/v17
+/Lab4_1/Lab4_1/x64/Debug
